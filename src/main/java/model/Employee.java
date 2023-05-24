@@ -5,6 +5,7 @@ import model.enums.Gender;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Table(name = "employee")
 public class Employee {
 	@Id
-	@Column(name = "id", nullable = false)
+	@Column(name = "id")
 	private String id;
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -23,10 +24,8 @@ public class Employee {
 	private String surname;
 	@Column(name = "gender", nullable = false)
 	private String gender;
-	@Column(name = "city", nullable = false)
-	private int city;
 
-	public Employee(String name, String surname, Gender gender, int city) {
+	public Employee(String name, String surname, Gender gender, City city) {
 		this.id = generator();
 		this.name = name;
 		this.surname = surname;
@@ -37,4 +36,8 @@ public class Employee {
 	private String generator() {
 		return RandomStringUtils.randomAlphabetic(9);
 	}
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "city_id")
+	private City city;
 }
