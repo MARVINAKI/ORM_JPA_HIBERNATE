@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "employee")
@@ -40,4 +39,14 @@ public class Employee {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "city_id")
 	private City city;
+
+	@Override
+	public String toString() {
+		return "Employee{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", surname='" + surname + '\'' +
+				", gender='" + gender + '\'' +
+				'}';
+	}
 }

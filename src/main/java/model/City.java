@@ -1,8 +1,6 @@
 package model;
 
-import com.sun.istack.NotNull;
 import lombok.*;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import javax.persistence.*;
@@ -11,7 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "city")
@@ -32,5 +29,13 @@ public class City {
 
 	private Integer generator() {
 		return RandomUtils.nextInt(1, 10000);
+	}
+
+	@Override
+	public String toString() {
+		return "City{" +
+				"id=" + id +
+				", cityName='" + cityName + '\'' +
+				'}';
 	}
 }

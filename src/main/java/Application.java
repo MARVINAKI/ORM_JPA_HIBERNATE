@@ -12,5 +12,8 @@ public class Application {
 		CityDAO cityDAO = new CityDAOImpl();
 
 		employeeDAO.addEmployee(new Employee("TEST", "TEST", Gender.MALE, new City("UFA")));
+		employeeDAO.deleteById("UjlaCovQl");
+		System.out.println(employeeDAO.getAllEmployees());
+		System.out.println(cityDAO.getAllCities());
 	}
 }

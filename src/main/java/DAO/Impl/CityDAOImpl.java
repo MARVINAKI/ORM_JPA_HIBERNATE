@@ -45,12 +45,23 @@ public class CityDAOImpl implements CityDAO {
 
 	@Override
 	public void updateById(Integer id, City city) {
-
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		city.setId(id);
+		em.merge(city);
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		City city = em.find(City.class, id);
+		if (city != null) {
+			em.remove(city);
+		}
+		em.getTransaction().commit();
 	}
 
 	private EntityManager getEntityManager() {
