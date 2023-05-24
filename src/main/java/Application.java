@@ -1,14 +1,19 @@
+import DAO.CityDAO;
 import DAO.EmployeeDAO;
+import DAO.Impl.CityDAOImpl;
 import DAO.Impl.EmployeeDAOImpl;
+import model.City;
 import model.Employee;
 import model.enums.Gender;
 
 public class Application {
 	public static void main(String[] args) {
 		EmployeeDAO employeeDAO = new EmployeeDAOImpl();
-		System.out.println(employeeDAO.findById("UvfaAImOR"));
-		employeeDAO.updateById("UvfaAImOR", new Employee("IsItWork?", "IsItWork?", Gender.FEMALE, 2));
-		employeeDAO.deleteById("PfsNKSwkV");
+		CityDAO cityDAO = new CityDAOImpl();
+
+		employeeDAO.addEmployee(new Employee("TEST", "TEST", Gender.MALE, new City("UFA")));
+		employeeDAO.deleteById("UjlaCovQl");
 		System.out.println(employeeDAO.getAllEmployees());
+		System.out.println(cityDAO.getAllCities());
 	}
 }

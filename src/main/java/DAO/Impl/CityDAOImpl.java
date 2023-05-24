@@ -1,7 +1,7 @@
 package DAO.Impl;
 
-import DAO.EmployeeDAO;
-import model.Employee;
+import DAO.CityDAO;
+import model.City;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -9,64 +9,59 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class EmployeeDAOImpl implements EmployeeDAO {
+
+public class CityDAOImpl implements CityDAO {
 
 	EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
 
 	@Override
-	public void addEmployee(Employee employee) {
+	public void addCity(City city) {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
-		em.persist(employee);
+		em.persist(city);
 		em.getTransaction().commit();
 		em.close();
 	}
 
 	@Override
-	public Employee findById(String id) {
+	public City findById(Integer id) {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
-		Employee employee = em.find(Employee.class, id);
+		City city = em.find(City.class, id);
 		em.getTransaction().commit();
-		em.close();
-		return employee;
+		return city;
 	}
 
 	@Override
-	public List<Employee> getAllEmployees() {
+	public List<City> getAllCities() {
 		EntityManager em = getEntityManager();
-		List<Employee> employeeList;
-		try {
-			em.getTransaction().begin();
-			TypedQuery<Employee> employeeTypedQuery = em.createQuery("SELECT e FROM Employee e", Employee.class);
-			employeeList = employeeTypedQuery.getResultList();
-			em.getTransaction().commit();
-		} finally {
-			em.close();
-		}
-		return employeeList;
+		List<City> cities;
+		em.getTransaction().begin();
+		TypedQuery<City> cityTypedQuery = em.createQuery("select c from City c", City.class);
+		cities = cityTypedQuery.getResultList();
+		em.getTransaction().commit();
+		return cities;
 	}
 
 	@Override
-	public void updateById(String id, Employee employee) {
+	public void updateById(Integer id, City city) {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
-		employee.setId(id);
-		em.merge(employee);
+		city.setId(id);
+		em.merge(city);
 		em.getTransaction().commit();
 		em.close();
 	}
 
 	@Override
-	public void deleteById(String id) {
+	public void deleteById(Integer id) {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
-		Employee employee = em.find(Employee.class, id);
-		if (employee != null) {
-			em.remove(employee);
+		City city = em.find(City.class, id);
+		if (city != null) {
+			em.remove(city);
 		}
 		em.getTransaction().commit();
-		em.close();
 	}
 
 	private EntityManager getEntityManager() {
