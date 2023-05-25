@@ -11,9 +11,11 @@ import java.util.List;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 
+	EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+
 	@Override
 	public void addEmployee(Employee employee) {
-		EntityManager em = open();
+		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
 		em.persist(employee);
 		em.getTransaction().commit();
@@ -22,7 +24,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public Employee findById(String id) {
-		EntityManager em = open();
+		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
 		Employee employee = em.find(Employee.class, id);
 		em.getTransaction().commit();
@@ -32,18 +34,22 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public List<Employee> getAllEmployees() {
-		EntityManager em = open();
-		em.getTransaction().begin();
-		TypedQuery<Employee> employeeTypedQuery = em.createQuery("SELECT e FROM Employee e", Employee.class);
-		List<Employee> employeeList = employeeTypedQuery.getResultList();
-		em.getTransaction().commit();
-		em.close();
+		EntityManager em = getEntityManager();
+		List<Employee> employeeList;
+		try {
+			em.getTransaction().begin();
+			TypedQuery<Employee> employeeTypedQuery = em.createQuery("SELECT e FROM Employee e", Employee.class);
+			employeeList = employeeTypedQuery.getResultList();
+			em.getTransaction().commit();
+		} finally {
+			em.close();
+		}
 		return employeeList;
 	}
 
 	@Override
 	public void updateById(String id, Employee employee) {
-		EntityManager em = open();
+		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
 		employee.setId(id);
 		em.merge(employee);
@@ -53,7 +59,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public void deleteById(String id) {
-		EntityManager em = open();
+		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
 		Employee employee = em.find(Employee.class, id);
 		if (employee != null) {
@@ -63,8 +69,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		em.close();
 	}
 
-	private EntityManager open() {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+	private EntityManager getEntityManager() {
 		return entityManagerFactory.createEntityManager();
 	}
 }
