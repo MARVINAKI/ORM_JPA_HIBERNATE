@@ -5,10 +5,10 @@ import org.apache.commons.lang3.RandomUtils;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "city")
@@ -29,6 +29,19 @@ public class City {
 
 	private Integer generator() {
 		return RandomUtils.nextInt(1, 10000);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		City city = (City) o;
+		return Objects.equals(id, city.id) && Objects.equals(cityName, city.cityName);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, cityName, employees);
 	}
 
 	@Override

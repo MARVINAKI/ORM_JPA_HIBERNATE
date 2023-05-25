@@ -64,7 +64,7 @@ public class CityDAOImpl implements CityDAO {
 		em.getTransaction().commit();
 	}
 
-	private EntityManager getEntityManager() {
+	private final EntityManager getEntityManager() {
 		return entityManagerFactory.createEntityManager();
 	}
 }

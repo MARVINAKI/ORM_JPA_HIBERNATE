@@ -6,10 +6,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "employee")
@@ -39,6 +39,19 @@ public class Employee {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "city_id")
 	private City city;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Employee employee = (Employee) o;
+		return Objects.equals(id, employee.id) && Objects.equals(name, employee.name) && Objects.equals(surname, employee.surname) && Objects.equals(gender, employee.gender);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, surname, gender, city);
+	}
 
 	@Override
 	public String toString() {
